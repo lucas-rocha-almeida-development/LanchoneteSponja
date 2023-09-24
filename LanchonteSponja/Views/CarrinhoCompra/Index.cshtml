@@ -1,0 +1,97 @@
+﻿@model CarrinhoCompraViewModel
+
+<div class="Container"><!--Inicio do container-->
+
+    <div class="row"> <!--Inicio div row-->
+        <div>
+            <img src="~/images/Full-Cart-icon.png" width="30" height="35" /> <h4>Seu carrinho de compras : </h4>
+        </div>
+
+        <table class=" table table-bordered table-striped "> <!--Inicio da tabela CABEÇALHO-->
+            <thead>
+
+                <tr>
+
+                    <th>Quantidade</th>
+                    <th>Lanche</th>
+                    <th class="text-right">Preço</th><!--Texto direita-->
+                    <th class="text-right">Subtotal</th><!--Texto direita-->
+                    <th></th>
+
+
+
+
+
+
+                </tr>
+
+
+            </thead>
+            <tbody><!--Corpo da Tabela-->
+                <!--Abaixo irei percorrer meu carrinho de compra e exibir todos em tela-->
+                @foreach (var item in Model.CarrinhoCompra.CarrinhoCompraItems)
+                {//responsavel pela exibição dos itens
+                     <!--Tr inicial-->
+                    <tr>
+                        <td class="text-center">@item.Quantidade</td><!--Alinhamento no centro-->
+                        <td class="text-left">@item.Lanche.Nome</td><!--Alinhamento na esquerda-->
+                        <td class="text-right">@item.Lanche.Preco.ToString("c")</td><!--Alinhamento na direita-->
+
+
+                        <!--Inclusão da td responsavel pela exibição do valor total + icon de excluir pedido-->
+                        <td class="text-right">
+                            <!--Calculo da quantidade(itens do pedido) multiplicado pelo preço do item-->
+                            @((item.Quantidade * item.Lanche.Preco).ToString("c"))
+                        </td>
+                        <td class="text-center"><!--Alinhamento centralizado-->
+                            <a asp-controller="CarrinhCompra" asp-action="RemoverItemDoCarrinhoCompra"
+                            
+                            asp-route-lancheId="@item.Lanche.LancheId"><img src="~/images/delete.png" width="10px" height="10px"/>
+                            <!--Atenção:assim que o usuario clicar na imagem, ira acinonar o comando
+                                remover item do carrinho, estamos usando o controlador Carrinho compra
+                                acionando o metodo remover item e logo depois selecionando o lancheid que 
+                                sera removido
+                            -->
+
+                            </a>
+
+                        </td><!--Fim da td icone remove metodo-->
+
+                    </tr>
+
+                    <!--Tr inicial-->
+
+                    
+                
+                }
+            </tbody><!--Corpo da Tabela-->
+            <!--INICIO do RODAPE-->
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total:</td>
+                    <td class="text-right">
+                        @Model.CarrinhoCompraTotal.ToString("c")
+
+                    </td>
+
+                </tr>
+            </tfoot>
+            <!--FIM do RODAPE-->
+
+        </table><!--Fim da tabela CABEÇALHO-->
+
+        <!--Botões-->
+        <div class="text-right">
+            <div class="btn-group">
+                <a class="btn btn-success" asp-controller="Pedido" asp-action="Checkout">Encerrar Pedido</a>
+                &nbsp;&nbsp;&nbsp;
+                <a class="btn btn-primary" asp-controller="Lanche" asp-action="List">Continuar comprando</a>
+            </div>
+
+        </div>
+        <br />
+
+
+    </div><!--Fim div row-->
+
+</div><!--Fim do container-->
